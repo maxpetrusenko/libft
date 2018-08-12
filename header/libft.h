@@ -6,7 +6,7 @@
 /*   By: mpetruse <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 09:18:45 by mpetruse          #+#    #+#             */
-/*   Updated: 2018/06/29 16:03:47 by mpetruse         ###   ########.fr       */
+/*   Updated: 2018/08/06 11:51:53 by mpetruse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,25 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <errno.h>
+# include "ft_printf.h"
+# define FALSE 0
+# define TRUE 1
+# define BUFF_SIZE 9999
+# define FDS 65535
+# define COLOR(s,n)			ft_putstr(s), (format += n)
+# define PF_RED				"\033[31m"
+# define PF_GREEN			"\033[32m\033[1m"
+# define PF_YELLOW			"\033[33m\033[1m"
+# define PF_BLUE			"\033[34m\033[1m"
+# define PF_PURPLE			"\033[35m\033[1m"
+# define PF_CYAN			"\033[36m\033[1m"
+# define PF_EOC				"\033[37m\033[0m"
+# define MAX(a, b)			b & ((a - b) >> 31) | a & (~(a - b) >> 31)
+# define MIN(a, b)			a & ((a - b) >> 31) | b & (~(a - b) >> 31)
+# define ABS(a)				(a < 0) ? -a : a
+
+typedef int			t_bool;
 
 void				*ft_memset(void *dst, int data, size_t len);
 void				ft_bzero(void *dst, size_t len);
@@ -73,6 +92,7 @@ int					ft_strsuffix(const char *str, const char *suffix);
 char				*ft_itoa(int n);
 char				*ft_utoa(unsigned int n, char const *base);
 void				ft_putchar(char c);
+void				ft_putnchar(int len, char c);
 void				ft_putwchar(wchar_t c);
 void				ft_putstr(char const *s);
 void				ft_putnstr(char const *s, size_t strlen);
@@ -85,6 +105,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putwchar_fd(wchar_t c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putnstr_fd(char const *s, size_t strlen, int fd);
+void				ft_putstr_free(char const *s);
 void				ft_putwstr_fd(wchar_t const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
@@ -95,6 +116,7 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void*, size_t));
@@ -103,6 +125,14 @@ void				ft_lstlink(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstrev(t_list **alst);
-size_t  			ft_lstcount(t_list *lst);
+size_t				ft_lstcount(t_list *lst);
+t_list          	*ft_lstswap(t_list *lst1, t_list *lst2);
+char				*ft_itoa_base_for_uint(unsigned long long value,
+					int base, char c);
+char				*ft_itoaf(uintmax_t n);
+char				*ft_get_binary(unsigned char octet);
+int					ft_wcharlen(wchar_t wc);
+
+int					get_next_line(const int fd, char **line);
 
 #endif

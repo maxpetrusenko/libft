@@ -6,33 +6,28 @@
 #    By: mpetruse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/18 16:34:50 by mpetruse          #+#    #+#              #
-#    Updated: 2018/07/24 15:11:12 by mpetruse         ###   ########.fr        #
+#    Updated: 2018/06/21 17:24:45 by mpetruse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-#
-C = gcc
 
 NAME = libft.a
 
-FLAGS = -Wall -Wextra -Werror -O2
+SRC = ft_*.c
 
-SOURCES = ./src/ft_*.c ./ft_printf/*.c
+OBJ = ft_*.o
 
-INCLUDE = header
-
-OBJS = ./src/ft_*.o ./ft_printf/*.o
+FLAG = -Wall -Werror -Wextra
 
 all: $(NAME)
 
 $(NAME):
-	$(CC) $(FLAGS) -c $(SOURCES) -I $(INCLUDE)
-	ar rc $(NAME) *.o
-	ranlib $(NAME)
+	gcc $(FLAG) -c $(SRC)
+	ar rcs $(NAME) $(OBJ)
 
 clean:
-	rm -f *.o
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all
+re:	fclean all
